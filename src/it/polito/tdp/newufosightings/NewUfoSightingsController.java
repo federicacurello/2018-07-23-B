@@ -45,14 +45,62 @@ public class NewUfoSightingsController {
 
 	@FXML // fx:id="btnSimula"
 	private Button btnSimula; // Value injected by FXMLLoader
+	private int anno;
+	private int gg;
 
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
+		txtResult.clear();
+		try {
+			if(txtAnno.getText()==null || txtxG.getText()==null) {
+				txtResult.setText("Inserire entrambi i valori");
+				return;
+			}
+			anno= Integer.parseInt(txtAnno.getText());
+			if(anno<1906 || anno>2014) {
+				txtResult.setText("Inserire un anno tra il 1906 e il 2014");
+				return;
+			}
+			gg= Integer.parseInt(txtxG.getText());
+			if(gg<1 || gg>180) {
+				txtResult.setText("Inserire un numero di giorni compreso tra 1 e 180");
+				return;
+			}
+			
+			txtResult.appendText(model.creaGrafo(anno, gg));
+			
+		}catch(NumberFormatException e) {
+			txtResult.setText("Errore di formattazione, inserire i valori di anno e xG");
+			return;
+		}
 
 	}
 
 	@FXML
 	void doSimula(ActionEvent event) {
+		txtResult.clear();
+		try {
+			if(txtT1.getText()==null || txtT2.getText()==null) {
+				txtResult.setText("Inserire entrambi i valori");
+				return;
+			}
+			int giorno1= Integer.parseInt(txtT1.getText());
+			if(giorno1>365) {
+				txtResult.setText("Inserire un numero di giorni minore di 365");
+				return;
+			}
+			int giorno2= Integer.parseInt(txtT2.getText());
+			if(giorno2>365) {
+				txtResult.setText("Inserire un numero di giorni minore di 365");
+				return;
+			}
+			
+			txtResult.appendText(model.simula(Integer.parseInt(txtAnno.getText()), Integer.parseInt(txtxG.getText()), giorno1, giorno2));
+			
+		}catch(NumberFormatException e) {
+			txtResult.setText("Errore di formattazione, inserire i valori di T1 e T2");
+			return;
+		}
 
 	}
 
